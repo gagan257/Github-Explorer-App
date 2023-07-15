@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class Search extends React.Component {
+  state = {
+    username: '',
+  }
+
+  handleUserNameChange = e => {
+    const value = e.target.value;
+
+    this.setState({
+      username: value,
+    })
+  };
+
+  render() {
+    const { username } = this.state;
+    return <input value={username} onChange={this.handleUserNameChange} type="text" name="username" placeholder="Enter username" />;
+  }
 }
 
-export default App;
+export default Search;
