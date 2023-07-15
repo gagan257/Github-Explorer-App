@@ -1,21 +1,19 @@
 import React from "react";
 
 class Search extends React.Component {
-  state = {
-    username: '',
-  }
+  inputRef = React.createRef();
 
-  handleUserNameChange = e => {
-    const value = e.target.value;
+  handleClick = () => {
+    const value = this.inputRef.current.value;
 
-    this.setState({
-      username: value,
-    })
+    alert(`The value of the input feild is ${value}`)
   };
 
   render() {
-    const { username } = this.state;
-    return <input value={username} onChange={this.handleUserNameChange} type="text" name="username" placeholder="Enter username" />;
+    return <div> 
+      <input ref={this.inputRef} type="text" name="username" placeholder="Enter username"/>
+      <button onClick={this.handleClick}>Click me</button>
+    </div>
   }
 }
 
