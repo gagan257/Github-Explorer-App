@@ -1,20 +1,42 @@
 import React from "react";
+import Search from "./components/Search";
 
-class Search extends React.Component {
-  inputRef = React.createRef();
-
-  handleClick = () => {
-    const value = this.inputRef.current.value;
-
-    alert(`The value of the input feild is ${value}`)
+class App extends React.Component {
+  state = {
+    user:null,
+    error:null
   };
 
+  fetchUserData = async username => {
+    // fetch github api
+    try{
+      const res = await fetch(`https://api.github.com/users/${username}`)
+      if(res.ok) {
+        const data = await res.json();
+        
+        return this.setState({
+          user: data
+        });
+      }
+      const error = (await res.json()).message;
+
+      this.setState({
+        error
+      });
+    } catch (err){
+      this.setState({
+        error:"Profile Not Found!"
+      });
+    }
+  }  
+  
   render() {
-    return <div> 
-      <input ref={this.inputRef} type="text" name="username" placeholder="Enter username"/>
-      <button onClick={this.handleClick}>Click me</button>
-    </div>
+    const { error } = this.state;
+    return <div>
+      <Search fetchData={this.fetchUserData}/>;
+      {error && <p className="text-danger">{error}</p>}
+    </div> 
   }
 }
 
-export default Search;
+export default App;
