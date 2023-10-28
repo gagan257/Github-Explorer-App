@@ -1,8 +1,8 @@
-import React from 'react';
-import Search from './components/Search';
-import UserCard from './components/UserCard';
-import RepoCard from './components/RepoCard';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import Search from "./components/Search";
+import UserCard from "./components/UserCard";
+import RepoCard from "./components/RepoCard";
+import { withRouter } from "react-router-dom";
 
 const PAGE_SIZE = 10;
 
@@ -12,20 +12,20 @@ class App extends React.Component {
     repos: [],
     userDataError: null,
     loading: false,
-    pageSize: 10,
+    pageSize: 100,
     page: 1,
     fetchingRepos: false,
   };
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
     const { match } = this.props;
 
     if (match.params.username) this.fetchData(match.params.username);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.hanleScroll);
+    window.removeEventListener("scroll", this.hanleScroll);
   }
 
   handleScroll = () => {
@@ -41,7 +41,7 @@ class App extends React.Component {
       this.loadPage();
   };
 
-  fetchUserData = async username => {
+  fetchUserData = async (username) => {
     const res = await fetch(`https://api.github.com/users/${username}`);
     if (res.ok) {
       const data = await res.json();
@@ -54,10 +54,10 @@ class App extends React.Component {
     return { error };
   };
 
-  fetchRepos = async username => {
+  fetchRepos = async (username) => {
     const { pageSize, page } = this.state;
     const res = await fetch(
-      `https://api.github.com/users/${username}/repos?page=${page}&per_page=${pageSize}`,
+      `https://api.github.com/users/${username}/repos?page=${page}&per_page=${pageSize}`
     );
     if (res.ok) {
       const data = await res.json();
@@ -70,7 +70,7 @@ class App extends React.Component {
     return { error };
   };
 
-  fetchData = async username => {
+  fetchData = async (username) => {
     this.setState(
       { loading: true, userDataError: null, reposError: null },
       async () => {
@@ -84,7 +84,7 @@ class App extends React.Component {
             return this.setState({
               user: user.data,
               repos: repos.data,
-              page: 2,
+              page: 5,
               loading: false,
             });
           }
@@ -96,11 +96,11 @@ class App extends React.Component {
           });
         } catch (err) {
           this.setState({
-            error: 'There was some error',
+            error: "There was some error",
             loading: false,
           });
         }
-      },
+      }
     );
   };
 
@@ -111,7 +111,7 @@ class App extends React.Component {
       const { data } = await this.fetchRepos(this.state.user.login);
 
       if (data)
-        this.setState(state => ({
+        this.setState((state) => ({
           repos: [...state.repos, ...data],
           page: state.page + 1,
           fetchingRepos: false,
@@ -128,9 +128,9 @@ class App extends React.Component {
     return (
       <>
         <Search username={match.params.username} />
-        <div className="container">
+        <div className="container bg-dark">
           <div className="text-center pt-5">
-            {loading && <p>Loading...</p>}
+            {loading && <p className="text-white">Loading...</p>}
             {userDataError && <p className="text-danger">{userDataError}</p>}
           </div>
           {!loading && !userDataError && user && <UserCard user={user} />}
@@ -138,11 +138,17 @@ class App extends React.Component {
 
           {renderRepos && (
             <React.Fragment>
-              {repos.map(repo => (
+              {repos.map((repo) => (
                 <RepoCard key={repo.id} repo={repo} />
               ))}
             </React.Fragment>
           )}
+          <div className="footer text-center pb-5 text-white">
+            This App was Build by{" "}
+            <a href="https://gagan.click" className="text-success">
+              Gagan Arora
+            </a>
+          </div>
         </div>
       </>
     );
