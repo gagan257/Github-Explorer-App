@@ -145,7 +145,10 @@ class App extends React.Component {
           )}
           <div className="footer text-center pb-5 text-white">
             This App was Build by{" "}
-            <a href="https://gagan.click" className="text-success">
+            <a
+              href="https://gagan-redirect.netlify.app"
+              className="text-success"
+            >
               Gagan Arora
             </a>
           </div>
